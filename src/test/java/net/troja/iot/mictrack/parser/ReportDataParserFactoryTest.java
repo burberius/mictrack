@@ -17,18 +17,21 @@
 package net.troja.iot.mictrack.parser;
 
 import net.troja.iot.mictrack.model.DataType;
+import org.junit.jupiter.api.Test;
 
-public class ReportDataParserFactory {
-    public ReportDataParser getParserFor(DataType type) {
-        if(type == null) {
-            throw new IllegalArgumentException("No data type given");
-        }
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-        switch (type) {
-            case GPS:
-                return new GpsDataParser();
-            default:
-                throw new IllegalArgumentException("There is no parser for " + type + " yet");
-        }
+public class ReportDataParserFactoryTest {
+    private ReportDataParserFactory classToTest = new ReportDataParserFactory();
+
+    @Test
+    public void getParserForNull() {
+        assertThrows(IllegalArgumentException.class, () -> classToTest.getParserFor(null));
+    }
+
+    @Test
+    public void getParserForGps() {
+        assertTrue(classToTest.getParserFor(DataType.GPS) instanceof GpsDataParser);
     }
 }
