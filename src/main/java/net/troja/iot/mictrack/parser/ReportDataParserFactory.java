@@ -27,6 +27,9 @@ public class ReportDataParserFactory {
         switch (type) {
             case GPS:
                 return new GpsDataParser();
+            case GSM_CELL:
+            case LTE_CELL:
+                return new CellDataParser();
             default:
                 throw new IllegalArgumentException("There is no parser for " + type + " yet");
         }

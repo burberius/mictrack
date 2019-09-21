@@ -17,40 +17,32 @@
 package net.troja.iot.mictrack.model;
 
 import lombok.Data;
-import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
-import java.math.BigDecimal;
-
 /**
- * Representation of GPS data
+ * Representation of cell data
  */
 @SuperBuilder
 @Data
-public class GpsData extends BaseReportData {
+public class CellData extends BaseReportData {
     /**
-     * The number of available satellites
+     * Mobile network code
      */
-    @NonNull
-    private int numberOfSatellites;
+    private int mnc;
     /**
-     * The device's latitude
+     * The 16-bit (GSM) or 28-bit (LTE) cell ID. Range: 0-0xFFFFFFF
      */
-    @NonNull
-    private BigDecimal latitude;
+    private long cellId;
     /**
-     * The device's longitude
+     * Location area code
      */
-    @NonNull
-    private BigDecimal longitude;
+    private int lac;
     /**
-     * Current speed with the unit km/h
+     * Mobile country code
      */
-    @NonNull
-    private BigDecimal speed;
+    private int mcc;
     /**
-     * Track angle in degrees (0 - 359)
+     * Physical Cell ID (only for LTE)
      */
-    @NonNull
-    private int heading;
+    private int pcid;
 }

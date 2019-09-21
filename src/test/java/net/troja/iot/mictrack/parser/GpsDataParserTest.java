@@ -28,14 +28,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GpsDataParserTest {
     private static final int SATELLITES = 10;
-    private static final String UTC_TIME = "190109091803";
+    public static final String UTC_TIME = "190109091803";
     private static final BigDecimal LATITUDE = BigDecimal.valueOf(22.63827);
     private static final BigDecimal LONGITUDE = BigDecimal.valueOf(114.02922);
     private static final BigDecimal SPEED = BigDecimal.valueOf(2.14);
     private static final int HEADING = 69;
     private static final EventType EVENT = EventType.GPS_REPORT;
-    private static final String VOLTAGE = "3744";
-    private static final int SEQUENCE = 113;
+    public static final String VOLTAGE = "3744";
+    public static final int SEQUENCE = 113;
 
     private GpsDataParser classToTest = new GpsDataParser();
 

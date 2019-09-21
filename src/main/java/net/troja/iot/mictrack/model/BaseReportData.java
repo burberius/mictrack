@@ -17,40 +17,38 @@
 package net.troja.iot.mictrack.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
- * Representation of GPS data
+ * Base for all report data with some common fields
  */
 @SuperBuilder
 @Data
-public class GpsData extends BaseReportData {
+@NoArgsConstructor
+public abstract class BaseReportData implements ReportData {
     /**
-     * The number of available satellites
+     * UTC Time of last GPS location
      */
     @NonNull
-    private int numberOfSatellites;
+    protected LocalDateTime time;
     /**
-     * The device's latitude
+     * Type of the event
      */
     @NonNull
-    private BigDecimal latitude;
+    protected EventType event;
     /**
-     * The device's longitude
+     * Backup battery voltage
      */
     @NonNull
-    private BigDecimal longitude;
+    protected BigDecimal voltage;
     /**
-     * Current speed with the unit km/h
+     * Plus 1 for every message from 0 to 255, then reset to 0.
      */
     @NonNull
-    private BigDecimal speed;
-    /**
-     * Track angle in degrees (0 - 359)
-     */
-    @NonNull
-    private int heading;
+    protected short sequenceNumber;
 }
