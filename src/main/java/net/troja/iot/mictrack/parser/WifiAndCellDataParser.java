@@ -19,19 +19,22 @@ package net.troja.iot.mictrack.parser;
 import net.troja.iot.mictrack.model.CellData;
 import net.troja.iot.mictrack.model.CellFields;
 import net.troja.iot.mictrack.model.EventType;
+import net.troja.iot.mictrack.model.WifiAndCellData;
+import net.troja.iot.mictrack.model.WifiFields;
 
-public class CellDataParser extends AbstractReportDataParser<CellData> {
+public class WifiAndCellDataParser extends AbstractReportDataParser<WifiAndCellData> {
     @Override
-    public CellData parse(String data) {
-        String[] baseFields = splitAndCheck(data, SEPARATOR, 5, 0);
-        String[] cellFields = splitAndCheck(baseFields[1], SUB_SEPARATOR, CellFields.CELL_FIELDS_LENGTH_LTE,
+    public WifiAndCellData parse(String data) {
+        String[] baseFields = splitAndCheck(data, SEPARATOR, 6, 0);
+        String[] wifiFields = splitAndCheck(baseFields[1], SUB_SEPARATOR, 4, 0);
+        String[] cellFields = splitAndCheck(baseFields[2], SUB_SEPARATOR, CellFields.CELL_FIELDS_LENGTH_LTE,
                 CellFields.CELL_FIELDS_LENGTH_GSM);
-        CellData.CellDataBuilder builder = CellData.builder()
+        return WifiAndCellData.builder()
                 .time(parseUtcTime(baseFields[0]))
+                .wifiFields(buildWifiFields(wifiFields))
                 .cellFields(buildCellFields(cellFields))
-                .event(EventType.values[Integer.parseInt(baseFields[2])])
-                .voltage(parseVoltage(baseFields[3]))
-                .sequenceNumber(Short.parseShort(baseFields[4]));
-        return builder.build();
+                .event(EventType.values[Integer.parseInt(baseFields[3])])
+                .voltage(parseVoltage(baseFields[4]))
+                .sequenceNumber(Short.parseShort(baseFields[5])).build();
     }
 }

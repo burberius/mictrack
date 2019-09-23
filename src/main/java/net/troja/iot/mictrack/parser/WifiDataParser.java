@@ -16,22 +16,21 @@
 
 package net.troja.iot.mictrack.parser;
 
-import net.troja.iot.mictrack.model.CellData;
-import net.troja.iot.mictrack.model.CellFields;
 import net.troja.iot.mictrack.model.EventType;
+import net.troja.iot.mictrack.model.WifiData;
 
-public class CellDataParser extends AbstractReportDataParser<CellData> {
+public class WifiDataParser extends AbstractReportDataParser<WifiData> {
     @Override
-    public CellData parse(String data) {
+    public WifiData parse(String data) {
         String[] baseFields = splitAndCheck(data, SEPARATOR, 5, 0);
-        String[] cellFields = splitAndCheck(baseFields[1], SUB_SEPARATOR, CellFields.CELL_FIELDS_LENGTH_LTE,
-                CellFields.CELL_FIELDS_LENGTH_GSM);
-        CellData.CellDataBuilder builder = CellData.builder()
+        String[] wifiFields = splitAndCheck(baseFields[1], SUB_SEPARATOR, 4, 0);
+
+        return WifiData.builder()
                 .time(parseUtcTime(baseFields[0]))
-                .cellFields(buildCellFields(cellFields))
+                .wifiFields(buildWifiFields(wifiFields))
                 .event(EventType.values[Integer.parseInt(baseFields[2])])
                 .voltage(parseVoltage(baseFields[3]))
-                .sequenceNumber(Short.parseShort(baseFields[4]));
-        return builder.build();
+                .sequenceNumber(Short.parseShort(baseFields[4]))
+                .build();
     }
 }

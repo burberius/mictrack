@@ -16,16 +16,37 @@
 
 package net.troja.iot.mictrack.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.experimental.SuperBuilder;
 
-/**
- * Representation of cell data
- */
-@SuperBuilder
+@Builder
 @Data
-public class CellData extends BaseReportData {
+public class CellFields {
+    public static final int CELL_FIELDS_LENGTH_LTE = 5;
+    public static final int CELL_FIELDS_LENGTH_GSM = 4;
+    /**
+     * Mobile network code
+     */
     @NonNull
-    private CellFields cellFields;
+    private int mnc;
+    /**
+     * The 16-bit (GSM) or 28-bit (LTE) cell ID. Range: 0-0xFFFFFFF
+     */
+    @NonNull
+    private long cellId;
+    /**
+     * Location area code
+     */
+    @NonNull
+    private int lac;
+    /**
+     * Mobile country code
+     */
+    @NonNull
+    private int mcc;
+    /**
+     * Physical Cell ID (only for LTE)
+     */
+    private int pcid;
 }

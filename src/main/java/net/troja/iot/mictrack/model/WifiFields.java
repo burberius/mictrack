@@ -16,16 +16,31 @@
 
 package net.troja.iot.mictrack.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
-import lombok.experimental.SuperBuilder;
 
-/**
- * Representation of cell data
- */
-@SuperBuilder
+@Builder
 @Data
-public class CellData extends BaseReportData {
+public class WifiFields {
+    /**
+     * First MAC address of some access point (AP)
+     */
     @NonNull
-    private CellFields cellFields;
+    private String mac1;
+    /**
+     * Received Signal Strength Indication (first AP)
+     */
+    @NonNull
+    private int rssi1;
+    /**
+     * Second MAC address of some access point (AP)
+     */
+    @NonNull
+    private String mac2;
+    /**
+     * Received Signal Strength Indication (second AP)
+     */
+    @NonNull
+    private int rssi2;
 }

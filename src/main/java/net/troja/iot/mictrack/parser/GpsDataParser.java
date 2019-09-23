@@ -20,13 +20,9 @@ import net.troja.iot.mictrack.model.EventType;
 import net.troja.iot.mictrack.model.GpsData;
 
 public class GpsDataParser extends AbstractReportDataParser<GpsData> {
-    public GpsDataParser() {
-        super(9);
-    }
-
     @Override
     public GpsData parse(String data) {
-        String[] fields = splitAndCheck(data);
+        String[] fields = splitAndCheck(data, SEPARATOR, 9, 0);
         return GpsData.builder()
                 .numberOfSatellites(Integer.parseInt(fields[0]))
                 .time(parseUtcTime(fields[1]))

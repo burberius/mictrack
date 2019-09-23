@@ -16,48 +16,45 @@
 
 package net.troja.iot.mictrack.parser;
 
+import lombok.NonNull;
 import net.troja.iot.mictrack.ProtocolParseException;
 import net.troja.iot.mictrack.model.EventType;
-import net.troja.iot.mictrack.model.GpsData;
+import net.troja.iot.mictrack.model.WifiData;
+import net.troja.iot.mictrack.model.WifiFields;
 import org.junit.jupiter.api.Test;
-
-import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class GpsDataParserTest {
-    private static final int SATELLITES = 10;
-    public static final String UTC_TIME = "190109091803";
-    private static final BigDecimal LATITUDE = BigDecimal.valueOf(22.63827);
-    private static final BigDecimal LONGITUDE = BigDecimal.valueOf(114.02922);
-    private static final BigDecimal SPEED = BigDecimal.valueOf(2.14);
-    private static final int HEADING = 69;
-    private static final EventType EVENT = EventType.GPS_REPORT;
-    public static final String VOLTAGE = "3744";
-    public static final int SEQUENCE = 113;
+public class WifiDataParserTest {
+    public static final String MAC1 = "6a:db:54:5a:79:6d";
+    public static final int RSSI1 = -91;
+    public static final String MAC2 = "00:9a:cd:a2:e6:21";
+    public static final int RSSI2 = -94;
+    public static final EventType  EVENT = EventType.WIFI_REPORT;
+    public static final String VOLTAGE  = "3831";
+    public static final int SEQUENCE = 0;
 
-    private GpsDataParser classToTest = new GpsDataParser();
+    private WifiDataParser classToTest = new WifiDataParser();
 
     @Test
     public void parse() {
-        String data = SATELLITES + AbstractReportDataParser.SEPARATOR +
-                UTC_TIME + AbstractReportDataParser.SEPARATOR +
-                LATITUDE + AbstractReportDataParser.SEPARATOR +
-                LONGITUDE + AbstractReportDataParser.SEPARATOR +
-                SPEED + AbstractReportDataParser.SEPARATOR +
-                HEADING + AbstractReportDataParser.SEPARATOR +
+        String data = GpsDataParserTest.UTC_TIME + AbstractReportDataParser.SEPARATOR +
+                MAC1 + AbstractReportDataParser.SUB_SEPARATOR +
+                RSSI1 + AbstractReportDataParser.SUB_SEPARATOR +
+                MAC2 + AbstractReportDataParser.SUB_SEPARATOR +
+                RSSI2 + AbstractReportDataParser.SEPARATOR +
                 EVENT.ordinal() + AbstractReportDataParser.SEPARATOR +
                 VOLTAGE + AbstractReportDataParser.SEPARATOR + SEQUENCE;
 
-        GpsData result = classToTest.parse(data);
+        WifiData result = classToTest.parse(data);
 
-        assertEquals(SATELLITES, result.getNumberOfSatellites());
-        assertEquals(AbstractReportDataParser.parseUtcTime(UTC_TIME), result.getTime());
-        assertEquals(LATITUDE, result.getLatitude());
-        assertEquals(LONGITUDE, result.getLongitude());
-        assertEquals(SPEED, result.getSpeed());
-        assertEquals(HEADING, result.getHeading());
+        assertEquals(AbstractReportDataParser.parseUtcTime(GpsDataParserTest.UTC_TIME), result.getTime());
+        @NonNull WifiFields wifiFields = result.getWifiFields();
+        assertEquals(MAC1, wifiFields.getMac1());
+        assertEquals(RSSI1, wifiFields.getRssi1());
+        assertEquals(MAC2, wifiFields.getMac2());
+        assertEquals(RSSI2, wifiFields.getRssi2());
         assertEquals(EVENT, result.getEvent());
         assertEquals(AbstractReportDataParser.parseVoltage(VOLTAGE), result.getVoltage());
         assertEquals(SEQUENCE, result.getSequenceNumber());
@@ -75,7 +72,7 @@ public class GpsDataParserTest {
 
     @Test
     public void parseWrongContent() {
-        String data = "10+190109091803+22.63827+114.02922+2.14+69+2+3744";
+        String data = "190108024848+6a:db:54:5a:79:6d,-91,00:9a:cd:a2:e6:21,-94+3+3831+0+6";
 
         assertThrows(ProtocolParseException.class, () -> classToTest.parse(data));
     }

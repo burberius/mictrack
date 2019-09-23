@@ -27,9 +27,17 @@ public class ReportDataParserFactory {
         switch (type) {
             case GPS:
                 return new GpsDataParser();
+            case WIFI:
+                return new WifiDataParser();
             case GSM_CELL:
             case LTE_CELL:
                 return new CellDataParser();
+            case WIFI_GSM_CELL:
+            case WIFI_LTE_CELL:
+                return new WifiAndCellDataParser();
+            case HEART_BEAT:
+            case CONFIGURATION:
+            case DEVICE_BINDING:
             default:
                 throw new IllegalArgumentException("There is no parser for " + type + " yet");
         }

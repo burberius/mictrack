@@ -21,11 +21,11 @@ import lombok.NonNull;
 import lombok.experimental.SuperBuilder;
 
 /**
- * Representation of cell data
+ * Representation of Wifi data
  */
 @SuperBuilder
 @Data
-public class CellData extends BaseReportData {
+public class WifiData extends BaseReportData {
     @NonNull
-    private CellFields cellFields;
+    private WifiFields wifiFields;
 }
